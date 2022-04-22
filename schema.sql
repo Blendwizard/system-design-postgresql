@@ -95,3 +95,49 @@ INSERT INTO photos (answer_id, url)
 SELECT answer_id, url
 FROM staging_photos;
 
+
+
+
+
+
+
+
+
+
+
+
+-- Altering field names
+
+--QUESTIONS TABLE RENAMING
+ALTER TABLE questions RENAME COLUMN body TO question_body;
+
+ALTER TABLE questions RENAME COLUMN date_written TO question_date;
+
+ALTER TABLE questions RENAME COLUMN helpful TO question_helpfulness;
+
+ALTER TABLE questions RENAME COLUMN helpful TO question_helpfulness;
+
+
+--QUESTIONS TABLE RENAMING
+ALTER TABLE answers RENAME COLUMN date_written TO date;
+
+ALTER TABLE answers RENAME COLUMN helpful TO helpfulness;
+
+
+-- --"product_id": "5",
+--   "results": [{
+--         "question_id": 37,
+--         "question_body": "Why is this product cheaper here than other sites?",
+--         "question_date": "2018-10-18T00:00:00.000Z",
+--         "asker_name": "williamsmith",
+--         "question_helpfulness": 4,
+--         "reported": false,
+--         "answers": {
+--           68: {
+--             "id": 68,
+--             "body": "We are selling it here without any markup from the middleman!",
+--             "date": "2018-08-18T00:00:00.000Z",
+--             "answerer_name": "Seller",
+--             "helpfulness": 4,
+--             "photos": []
+--             // ...

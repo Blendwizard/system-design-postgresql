@@ -14,12 +14,12 @@ client.connect((err, res) => {
   }
 });
 
-const query = 'SELECT * FROM questions WHERE id = 1';
-
-client
-.query(query)
-.then(res => console.log('RESULTS::', res.rows[0]))
-.catch(err => console.log('ERROR:::', err))
-.then(() => client.end())
-
-
+  exports.queryTest = () => {
+    // const query = 'SELECT * FROM questions WHERE id = 2';
+    const query = ''
+    client
+    .query(query)
+    .then(res => console.log("A GET request made this query:::", res.rows[0]))
+    .catch(err => console.log("ERR::", err))
+    .then(() => client.end())
+  }
