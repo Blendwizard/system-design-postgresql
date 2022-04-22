@@ -16,10 +16,27 @@ client.connect((err, res) => {
 
   exports.queryTest = () => {
     // const query = 'SELECT * FROM questions WHERE id = 2';
-    const query = ''
+
+    const query =
+    `SELECT
+    answers.id,
+    question_id,
+    body,
+    to_timestamp(date / 1000)::date AS "date",
+    answerer_name,
+    helpfulness,
+    photos.url
+
+    FROM answers
+
+    JOIN photos ON photos.answer_id = answers.id
+
+    WHERE question_id = 230773;`;
+
+
     client
     .query(query)
-    .then(res => console.log("A GET request made this query:::", res.rows[0]))
+    .then(res => console.log(res.rows[0]))
     .catch(err => console.log("ERR::", err))
-    .then(() => client.end())
+    // .then(() => client.end())
   }

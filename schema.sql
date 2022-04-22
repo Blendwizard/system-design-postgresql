@@ -102,10 +102,6 @@ FROM staging_photos;
 
 
 
-
-
-
-
 -- Altering field names
 
 --QUESTIONS TABLE RENAMING
@@ -124,20 +120,34 @@ ALTER TABLE answers RENAME COLUMN date_written TO date;
 ALTER TABLE answers RENAME COLUMN helpful TO helpfulness;
 
 
--- --"product_id": "5",
---   "results": [{
---         "question_id": 37,
---         "question_body": "Why is this product cheaper here than other sites?",
---         "question_date": "2018-10-18T00:00:00.000Z",
---         "asker_name": "williamsmith",
---         "question_helpfulness": 4,
---         "reported": false,
---         "answers": {
---           68: {
---             "id": 68,
---             "body": "We are selling it here without any markup from the middleman!",
---             "date": "2018-08-18T00:00:00.000Z",
---             "answerer_name": "Seller",
---             "helpfulness": 4,
---             "photos": []
---             // ...
+-- Custom Query Experiments
+
+-- Question data (may need refining)
+SELECT
+id AS question_id,
+product_id,
+question_body,
+to_timestamp(question_date / 1000)::date,
+asker_name,
+question_helpfulness,
+reported
+
+FROM questions
+
+WHERE product_id=65638;
+
+-- Answer data (may need refining)
+SELECT
+answers.id,
+question_id,
+body,
+to_timestamp(date / 1000)::date AS "date",
+answerer_name,
+helpfulness,
+photos.url
+
+FROM answers
+
+JOIN photos ON photos.answer_id = answers.id
+
+WHERE question_id = 230773;
