@@ -114,40 +114,10 @@ ALTER TABLE questions RENAME COLUMN helpful TO question_helpfulness;
 ALTER TABLE questions RENAME COLUMN helpful TO question_helpfulness;
 
 
---QUESTIONS TABLE RENAMING
+--ANSWERS TABLE RENAMING
 ALTER TABLE answers RENAME COLUMN date_written TO date;
 
 ALTER TABLE answers RENAME COLUMN helpful TO helpfulness;
 
 
--- Custom Query Experiments
 
--- Question data (may need refining)
-SELECT
-id AS question_id,
-product_id,
-question_body,
-to_timestamp(question_date / 1000)::date,
-asker_name,
-question_helpfulness,
-reported
-
-FROM questions
-
-WHERE product_id=65638;
-
--- Answer data (may need refining)
-SELECT
-answers.id,
-question_id,
-body,
-to_timestamp(date / 1000)::date AS "date",
-answerer_name,
-helpfulness,
-photos.url
-
-FROM answers
-
-JOIN photos ON photos.answer_id = answers.id
-
-WHERE question_id = 230773;
