@@ -118,3 +118,10 @@ array_agg(
 FROM questions
 
 WHERE product_id=65638;
+
+--end
+
+SELECT  id, body, to_timestamp(date / 1000)::date, answerer_name, helpfulness
+
+FROM answers
+WHERE question_id IN (SELECT id FROM public.questions WHERE product_id = 1);
