@@ -118,10 +118,104 @@ array_agg(
 FROM questions
 
 WHERE product_id=65638;
-
 --end
+
+
+
 
 SELECT  id, body, to_timestamp(date / 1000)::date, answerer_name, helpfulness
 
 FROM answers
 WHERE question_id IN (SELECT id FROM public.questions WHERE product_id = 1);
+
+-- WHERE question_id = questions.id;
+
+
+
+
+    -- TROUBLE SHOOTING
+
+    -- Get a list of question ids for a single product with the ID of 1.
+    SELECT id FROM questions WHERE questions.product_id = 1;
+
+    -- Get a list of answers for a single questions with the question id of 1.
+    SELECT * FROM answers WHERE question_id = 1;
+
+
+
+
+
+    -- FIXED VERSION USING SAMPLE PRODUCT 5
+    SELECT
+    json_agg(
+      json_build_object(
+        'question_id', id,
+        'question_body', question_body,
+        'question_date', to_timestamp(question_date / 1000)::date,
+        'asker_name', asker_name,
+        'question_helpfulness', question_helpfulness,
+        'reported', reported,
+        'answers', (
+          SELECT json_object_agg(answers.id,
+            json_build_object(
+              'id', answers.id,
+              'body', answers.body,
+              'date', to_timestamp(answers.date / 1000)::date,
+              'answerer_name', answerer_name,
+              'helpfulness', answers.helpfulness,
+              'photos', (SELECT array_agg(photos.url) FROM photos WHERE photos.answer_id = answers.id)
+            )
+          )
+			  AS answers FROM answers
+        WHERE answers.question_id = questions.id
+        )
+      )
+    )
+    FROM questions
+
+    WHERE product_id=5;
+
+------------------------------------------------------
+
+
+
+
+
+
+
+
+--BROKEN DO NOT USE
+    SELECT
+    array_agg(
+      json_build_object(
+        'question_id', id,
+        'question_body', question_body,
+        'question_date', to_timestamp(question_date / 1000)::date,
+        'asker_name', asker_name,
+        'question_helpfulness', question_helpfulness,
+        'reported', reported,
+        'answers', (
+          json_object_agg('key',
+              SELECT json_build_object(
+                'id', answers.id,
+                'body', body,
+                'date', to_timestamp(date / 1000)::date,
+                'answerer_name', answerer_name,
+                'helpfulness', helpfulness,
+                'photos', (
+                  SELECT array_agg(
+                    photos.url
+                  )
+                  FROM photos
+                  WHERE answer_id = 45032
+                  )
+                )
+              FROM answers
+              WHERE answers.question_id = questions.id;
+          )
+        )
+      )
+    )
+    FROM questions
+
+    WHERE product_id=1;

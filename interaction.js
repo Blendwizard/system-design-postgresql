@@ -25,28 +25,20 @@ pool.connect((err, res) => {
         'asker_name', asker_name,
         'question_helpfulness', question_helpfulness,
         'reported', reported,
-        'answers', json_build_object(
-          (SELECT answers.id FROM answers WHERE question_id = 230774),
-          (
-            SELECT json_build_object(
-              'id', answers.id,
-              'body', body,
-              'date', to_timestamp(date / 1000)::date,
-              'answerer_name', answerer_name,
-              'helpfulness', helpfulness,
-              'photos', (
-                SELECT array_agg(
-                  photos.url
+        'answers', (
+          SELECT json_object_agg(answers.id,
+               json_build_object(
+                'id', answers.id,
+                'body', answers.body,
+                'date', to_timestamp(answers.date / 1000)::date,
+                'answerer_name', answerer_name,
+                'helpfulness', answers.helpfulness,
+                'photos', (SELECT array_agg(photos.url) FROM photos WHERE photos.answer_id = answers.id)
                 )
-                FROM photos
-                WHERE answer_id = 45032
-                )
-              )
-            FROM answers
-            WHERE question_id IN (SELECT id
-              FROM questions WHERE product_id = 1
-              )
+
           )
+			AS answers FROM answers
+            WHERE answers.question_id = questions.id
         )
       )
     )
@@ -58,10 +50,11 @@ pool.connect((err, res) => {
     pool
     .query(query)
     .then((res) => {
-      masterObj = {};
-      masterObj.product_id = id;
-      masterObj.results = res.rows[0].array_agg;
-      callback(null, masterObj);
+      product = {};
+      product.product_id = id;
+      product.results = res.rows[0].array_agg;
+
+      callback(null, product);
     })
 
     .catch(err => callback(err))
