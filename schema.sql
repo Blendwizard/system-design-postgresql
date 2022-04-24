@@ -120,4 +120,9 @@ ALTER TABLE answers RENAME COLUMN date_written TO date;
 ALTER TABLE answers RENAME COLUMN helpful TO helpfulness;
 
 
+--QUESTIONS TABLE SETTING DEFAULTS
+ALTER TABLE questions ALTER COLUMN question_helpfulness SET DEFAULT 0;
 
+ALTER TABLE questions ALTER COLUMN reported SET DEFAULT 0;
+
+ALTER TABLE questions ALTER COLUMN question_date SET DEFAULT extract(epoch from now()) * 1000;

@@ -102,5 +102,34 @@ pool.connect((err, res) => {
       callback(null, question);
     })
     .catch(err => callback(err));
+  },
+
+
+
+
+  addQuestion: ({ body, name, email, product_id }, callback) => {
+
+    const query = `INSERT INTO questions (question_body, asker_email, asker_name, product_id) VALUES ($1, $2, $3, $4)`;
+    const values = [body, email, name, parseInt(product_id)];
+    pool
+    .query(query, values)
+    .then(res => callback(null, res))
+    .catch(err => callback(err))
+  },
+
+
+
+
+  addAnswer: (question_id, { body, name, email, photos }, callback) => {
+    const answerQuery = 'INSERT INTO answers (question_id, body, answerer_name, answerer_email) VALUES ($1, $2, $3, $4)';
+    const answerValues = [question_id, body, name, email];
+
+    // const photosQuery = 'INSERT INTO photos (answer_id) VALUES ($1)'
+
+    // pool
+    // .query(query, values)
+    // .then(res => callback(null, res))
+    // .catch(err => callback(err))
   }
+
 }
