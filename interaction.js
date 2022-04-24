@@ -119,17 +119,20 @@ pool.connect((err, res) => {
 
 
 
-
   addAnswer: (question_id, { body, name, email, photos }, callback) => {
-    const answerQuery = 'INSERT INTO answers (question_id, body, answerer_name, answerer_email) VALUES ($1, $2, $3, $4)';
-    const answerValues = [question_id, body, name, email];
 
-    // const photosQuery = 'INSERT INTO photos (answer_id) VALUES ($1)'
+    const query = `WITH new_answer_id AS (
+      INSERT INTO answers (question_id, body, answerer_name, answerer_email) VALUES ($1, $2, $3, $4) RETURNING id)
+      INSERT INTO photos (answer_id, url)
+      SELECT id, $5 FROM new_answer_id;`
+    ;
 
-    // pool
-    // .query(query, values)
-    // .then(res => callback(null, res))
-    // .catch(err => callback(err))
+    const values = [question_id, body, name, email, photos];
+
+    pool.query(query, values)
+    .then(res => callback(null, res))
+    .catch(err => callback(err));
+
   }
 
 }

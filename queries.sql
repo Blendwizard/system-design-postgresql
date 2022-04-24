@@ -206,9 +206,15 @@ WHERE answers.question_id = 34;
 ------------------------------------------------------
 
 
+--INSERTING ANSWER FOR 1 QUESTION, AND UPDATING PHOTOS TABLE TIED TO ANSWER
+  -- USING SAMPLE INPUTS
 
-
-
+WITH new_answer_id AS (
+	INSERT INTO answers (question_id, body, answerer_name, answerer_email) VALUES (1, 'it does come in burgundy!!!', 'Billy Bob', 'billybob@mail.com')
+	RETURNING id
+)
+INSERT INTO photos (answer_id, url)
+SELECT id, 'somephotoURLvalue' FROM new_answer_id;
 
 
 

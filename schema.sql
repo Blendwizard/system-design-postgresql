@@ -126,3 +126,12 @@ ALTER TABLE questions ALTER COLUMN question_helpfulness SET DEFAULT 0;
 ALTER TABLE questions ALTER COLUMN reported SET DEFAULT 0;
 
 ALTER TABLE questions ALTER COLUMN question_date SET DEFAULT extract(epoch from now()) * 1000;
+
+
+--ANSWERS TABLE SETTING DEFAULTS
+
+ALTER TABLE answers ALTER COLUMN date SET DEFAULT extract(epoch from now()) * 1000;
+
+ALTER TABLE answers ALTER COLUMN helpfulness SET DEFAULT 0;
+
+ALTER TABLE answers ALTER COLUMN reported SET DEFAULT 0;
