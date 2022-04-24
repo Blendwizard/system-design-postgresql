@@ -133,6 +133,19 @@ pool.connect((err, res) => {
     .then(res => callback(null, res))
     .catch(err => callback(err));
 
+  },
+
+  markQuestionHelpful: (id, callback) => {
+    const query = `UPDATE questions
+    SET question_helpfulness = question_helpfulness + 1
+    WHERE id = $1;`;
+
+    const value = [id];
+
+    pool
+    .query(query, value)
+    .then(res => callback(null, res))
+    .catch(err => callback(err));
   }
 
 }

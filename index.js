@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const { getProductQuestions, getQuestionAnswers, addQuestion, addAnswer } = require('./interaction')
+const { getProductQuestions, getQuestionAnswers, addQuestion, addAnswer, markQuestionHelpful } = require('./interaction')
 
 // Parse incoming JSON payloads
 app.use(express.json())
@@ -51,10 +51,10 @@ app.post('/qa/questions', (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.sendStatus(200);
+      res.sendStatus(201);
     }
   });
-})
+});
 
 
 
@@ -72,9 +72,25 @@ app.post('/qa/questions/:question_id/answers', (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.sendStatus(200);
+      res.sendStatus(201);
     }
   })
+});
+
+
+app.post('/qa/questions/:question_id/helpful', (req, res) => {
+  const id = req.params.question_id;
+  markQuestionHelpful(id, (err, success) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+
+
 })
+
+
 
 app.listen(PORT, () => console.log(`Listening on port...${PORT}`))
