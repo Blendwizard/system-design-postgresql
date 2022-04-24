@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const { getProductQuestions, getQuestionAnswers, addQuestion, addAnswer, markQuestionHelpful } = require('./interaction')
+const { getProductQuestions, getQuestionAnswers, addQuestion, addAnswer, markQuestionHelpful, reportQuestion } = require('./interaction')
 
 // Parse incoming JSON payloads
 app.use(express.json())
@@ -78,7 +78,9 @@ app.post('/qa/questions/:question_id/answers', (req, res) => {
 });
 
 
-app.post('/qa/questions/:question_id/helpful', (req, res) => {
+
+// Increments a specific Question as helpful
+app.put('/qa/questions/:question_id/helpful', (req, res) => {
   const id = req.params.question_id;
   markQuestionHelpful(id, (err, success) => {
     if (err) {
@@ -87,9 +89,19 @@ app.post('/qa/questions/:question_id/helpful', (req, res) => {
       res.sendStatus(204);
     }
   })
+});
 
-
-})
+// Reports a Question to hide from results
+app.put('/qa/questions/:question_id/report', (req, res) => {
+  const id = req.params.question_id;
+  reportQuestion(id, (err, success) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+});
 
 
 
