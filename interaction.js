@@ -148,14 +148,26 @@ pool.connect((err, res) => {
     .catch(err => callback(err));
   },
 
+
   reportQuestion: (id, callback) => {
-    console.log('Reported!')
     const query = `UPDATE questions
     SET reported = 1
     WHERE id = $1
     `;
     const value = [id];
 
+    pool
+    .query(query, value)
+    .then(res => callback(null, res))
+    .catch(err => callback(err));
+  },
+
+  markAnswerHelpful: (id, callback) => {
+    const query = ` UPDATE answers
+    SET helpfulness = helpfulness + 1
+    WHERE id = $1;
+    `;
+    const value = [id];
     pool
     .query(query, value)
     .then(res => callback(null, res))

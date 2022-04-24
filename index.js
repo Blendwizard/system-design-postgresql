@@ -1,7 +1,15 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const { getProductQuestions, getQuestionAnswers, addQuestion, addAnswer, markQuestionHelpful, reportQuestion } = require('./interaction')
+const {
+  getProductQuestions,
+  getQuestionAnswers,
+  addQuestion,
+  addAnswer,
+  markQuestionHelpful,
+  reportQuestion,
+  markAnswerHelpful
+ } = require('./interaction')
 
 // Parse incoming JSON payloads
 app.use(express.json())
@@ -102,6 +110,17 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
     }
   })
 });
+
+app.put('/qa/answers/:answer_id/helpful', (req, res) => {
+  const id = req.params.answer_id;
+  markAnswerHelpful(id, (err, success) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+})
 
 
 
