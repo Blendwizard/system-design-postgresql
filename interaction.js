@@ -49,7 +49,7 @@ pool.connect((err, res) => {
       )
     )
     FROM questions
-    WHERE product_id=${id}
+    WHERE product_id=${id} AND reported = 0
  `;
     pool
     .query(query)
@@ -89,7 +89,7 @@ pool.connect((err, res) => {
       )
       )
       FROM answers
-      WHERE answers.question_id = ${id};
+      WHERE answers.question_id = ${id} AND reported = 0;
     `;
 
     pool.query(query)

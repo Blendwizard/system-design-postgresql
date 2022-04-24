@@ -112,6 +112,8 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
   })
 });
 
+
+// Increments a specific Answer as helpful
 app.put('/qa/answers/:answer_id/helpful', (req, res) => {
   const id = req.params.answer_id;
   markAnswerHelpful(id, (err, success) => {
@@ -123,6 +125,7 @@ app.put('/qa/answers/:answer_id/helpful', (req, res) => {
   })
 });
 
+// Reports an Answer to hide from results
 app.put('/qa/answers/:answer_id/report', (req, res) => {
   const id = req.params.answer_id;
   reportAnswer(id, (err, success) => {
