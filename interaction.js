@@ -14,9 +14,9 @@ pool.connect((err, res) => {
   }
 });
 
-  exports.getProductQuestions = (id, callback, page = 1, count = 5) => {
+  module.exports = {
 
-
+    getProductQuestions: (id, callback, page = 1, count = 5) => {
     let offset = count * (page - 1);
     console.log("count", count)
     console.log("offset", offset, "page::", page)
@@ -51,8 +51,6 @@ pool.connect((err, res) => {
     FROM questions
     WHERE product_id=${id}
  `;
-
-
     pool
     .query(query)
     .then((res) => {
@@ -64,4 +62,45 @@ pool.connect((err, res) => {
     })
 
     .catch(err => callback(err))
+  },
+
+
+
+
+  getQuestionAnswers: (id, callback, page = 1, count = 5) => {
+    const query = `
+    SELECT json_agg(
+      json_build_object(
+        'answer_id', answers.id,
+        'body', answers.body,
+        'date', to_timestamp(answers.date / 1000)::date,
+        'answerer_name',answerer_name,
+        'helpfulness', answers.helpfulness,
+        'photos', (
+          SELECT (COALESCE(array_agg(
+            json_build_object(
+              'id', photos.id,
+              'url', photos.url
+            )
+          ), array[]::json[]))
+          FROM photos
+          WHERE photos.answer_id = answers.id
+        )
+      )
+      )
+      FROM answers
+      WHERE answers.question_id = ${id};
+    `;
+
+    pool.query(query)
+    .then((res) => {
+      question = {};
+      question.question = id;
+      question.page = page;
+      question.count = count;
+      question.results = res.rows[0].json_agg;
+      callback(null, question);
+    })
+    .catch(err => callback(err));
   }
+}

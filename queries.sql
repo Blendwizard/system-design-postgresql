@@ -144,10 +144,10 @@ WHERE question_id IN (SELECT id FROM public.questions WHERE product_id = 1);
 
 
 
-
+--GETTING PRODUCT QUESTIONS MAIN ROUTE
     -- FIXED VERSION USING SAMPLE PRODUCT 5
     SELECT
-    json_agg(
+    array_agg(
       json_build_object(
         'question_id', id,
         'question_body', question_body,
@@ -176,6 +176,44 @@ WHERE question_id IN (SELECT id FROM public.questions WHERE product_id = 1);
     WHERE product_id=5;
 
 ------------------------------------------------------
+
+
+
+--GETTING ANSWERS FOR 1 QUESTION ROUTE
+    --USING SAMPLE QUESTION ID 34
+SELECT json_agg(
+json_build_object(
+	'answer_id', answers.id,
+	'body', answers.body,
+	'date', to_timestamp(answers.date / 1000)::date,
+	'answerer_name',answerer_name,
+	'helpfulness', answers.helpfulness,
+	'photos', (
+		SELECT (COALESCE(array_agg(
+			json_build_object(
+				'id', photos.id,
+				'url', photos.url
+			)
+		), array[]::json[]))
+		FROM photos
+		WHERE photos.answer_id = answers.id
+	)
+)
+)
+FROM answers
+WHERE answers.question_id = 34;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
