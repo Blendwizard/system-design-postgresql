@@ -6,14 +6,15 @@ const { getProductQuestions } = require('./interaction')
 
 app.get('/qa/questions', (req, res) => {
   let product = req.query.product_id;
+  console.log(req.query);
 
   getProductQuestions(product, (err, success) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      res.send(success);
+      res.status(200).send(success);
     }
-  });
+  }, parseInt(req.query.page), parseInt(req.query.count));
 
 });
 

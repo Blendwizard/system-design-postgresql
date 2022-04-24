@@ -14,7 +14,13 @@ pool.connect((err, res) => {
   }
 });
 
-  exports.getProductQuestions = (id, callback) => {
+  exports.getProductQuestions = (id, callback, page = 1, count = 5) => {
+
+
+    let offset = count * (page - 1);
+    console.log("count", count)
+    console.log("offset", offset, "page::", page)
+
     const query =
     `SELECT
     array_agg(
@@ -33,7 +39,7 @@ pool.connect((err, res) => {
                 'date', to_timestamp(answers.date / 1000)::date,
                 'answerer_name', answerer_name,
                 'helpfulness', answers.helpfulness,
-                'photos', (SELECT array_agg(photos.url) FROM photos WHERE photos.answer_id = answers.id)
+                'photos', (SELECT COALESCE(array_agg(photos.url), array[]::text[]) FROM photos WHERE photos.answer_id = answers.id)
                 )
 
           )
@@ -43,8 +49,8 @@ pool.connect((err, res) => {
       )
     )
     FROM questions
-
-    WHERE product_id=${id};`;
+    WHERE product_id=${id}
+ `;
 
 
     pool

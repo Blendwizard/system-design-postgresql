@@ -163,7 +163,7 @@ WHERE question_id IN (SELECT id FROM public.questions WHERE product_id = 1);
               'date', to_timestamp(answers.date / 1000)::date,
               'answerer_name', answerer_name,
               'helpfulness', answers.helpfulness,
-              'photos', (SELECT array_agg(photos.url) FROM photos WHERE photos.answer_id = answers.id)
+              'photos', (SELECT COALESCE(array_agg(photos.url),array[]::text[]) FROM photos WHERE photos.answer_id = answers.id)
             )
           )
 			  AS answers FROM answers
