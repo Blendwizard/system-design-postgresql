@@ -2,10 +2,10 @@
   "name": "system-design-postgresql",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
