@@ -172,6 +172,20 @@ pool.connect((err, res) => {
     .query(query, value)
     .then(res => callback(null, res))
     .catch(err => callback(err));
+  },
+
+  reportAnswer: (id, callback) => {
+    console.log('reported answer!')
+    const query = `
+      UPDATE answers
+      SET reported = 1
+      WHERE id = $1;
+    `;
+    const value = [id];
+    pool
+    .query(query, value)
+    .then(res => callback(null, res))
+    .catch(err => callback(err));
   }
 
 }

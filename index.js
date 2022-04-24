@@ -8,7 +8,8 @@ const {
   addAnswer,
   markQuestionHelpful,
   reportQuestion,
-  markAnswerHelpful
+  markAnswerHelpful,
+  reportAnswer
  } = require('./interaction')
 
 // Parse incoming JSON payloads
@@ -120,7 +121,18 @@ app.put('/qa/answers/:answer_id/helpful', (req, res) => {
       res.sendStatus(204);
     }
   })
-})
+});
+
+app.put('/qa/answers/:answer_id/report', (req, res) => {
+  const id = req.params.answer_id;
+  reportAnswer(id, (err, success) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(204);
+    }
+  })
+});
 
 
 
