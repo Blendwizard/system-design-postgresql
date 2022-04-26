@@ -1,7 +1,75 @@
 import http from 'k6/http';
 import { sleep } from 'k6';
 
+export const options = {
+  scenarios: {
+    constant_request_rate: {
+      executor: 'constant-arrival-rate',
+      rate: 50,
+      timeUnit: '1s',
+      duration: '30s',
+      preAllocatedVUs: 100,
+      maxVUs: 600,
+    },
+  },
+};
+
 export default function () {
-  http.get('https://test.k6.io');
+
+  // Get Scenario 1
+  // http.get(`http://localhost:3000/qa/questions/?product_id=${Math.floor(Math.random() * 1000011)}`);
+
+  // // Get Scenario 2
+  // http.get(`http://localhost:3000/qa/questions/${Math.floor(Math.random() * 3518916 )}/answers`);G
+
+
+  // Post Scenario 1
+  // const url = `http://localhost:3000/qa/questions/`;
+  // const payload = JSON.stringify({
+  //   body: 'Is this a test query from our benchmarks?',
+  //   name: 'TestName',
+  //   email: 'Test@EMAIL.com',
+  //   product_id: 1
+  // });
+
+  // const params = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // };
+
+  // http.post(url, payload, params);
+
+
+  // // Post Scenario 2
+  // const url = `http://localhost:3000/qa/questions/:question_id/answers`;
+  // const payload = JSON.stringify({
+  //   body: 'This is a test answer for our bench mark',
+  //   name: 'TestName',
+  //   email: 'Test@EMAIL.com',
+  //   product_id: 1
+  // });
+
+  // const params = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // };
+
+  // http.post(url, payload, params);
+
+
+
+  // // Question Puts
+  // http.put(`http://localhost:3000/qa/questions/:question_id/helpful`)
+
+  // http.put(`http://localhost:3000/qa/questions/:question_id/report`)
+
+  // // Answer Puts
+  // http.put(`http://localhost:3000/qa/answers/:answer_id/helpful`)
+
+  // http.put(`http://localhost:3000/qa/answers/:answer_id/report`)
+
   sleep(1);
+
 }

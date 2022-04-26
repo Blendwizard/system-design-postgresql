@@ -20,7 +20,6 @@ pool.connect((err, res) => {
     let offset = count * (page - 1);
     console.log("count", count)
     console.log("offset", offset, "page::", page)
-
     const query =
     `SELECT
     array_agg(
