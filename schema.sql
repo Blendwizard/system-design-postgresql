@@ -36,11 +36,6 @@ CREATE TABLE products (
   PRIMARY KEY(id)
 );
 
--- Populate product IDs from staged questions
-INSERT INTO products (id)
-  SELECT DISTINCT product_id
-  FROM staging_questions
-  ORDER BY product_id;
 
 CREATE TABLE questions (
   id SERIAL NOT NULL,
@@ -95,6 +90,11 @@ INSERT INTO photos (answer_id, url)
 SELECT answer_id, url
 FROM staging_photos;
 
+-- Populate product IDs from staged questions
+INSERT INTO products (id)
+SELECT DISTINCT product_id
+FROM staging_questions
+ORDER BY product_id;
 
 
 

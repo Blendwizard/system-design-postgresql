@@ -221,47 +221,14 @@ SELECT id, 'somephotoURLvalue' FROM new_answer_id;
 
 
 
+-- CREATING INDICIES
 
+-- Primary GET
+-- Index on question_id column in Answers table
+CREATE INDEX answers_questionId_index on answers(question_id);
 
+--Index on product_id column in Questions table
+CREATE INDEX questions_productId_index on questions(product_id);
 
-
-
-
-
-
-
---BROKEN DO NOT USE
-    SELECT
-    array_agg(
-      json_build_object(
-        'question_id', id,
-        'question_body', question_body,
-        'question_date', to_timestamp(question_date / 1000)::date,
-        'asker_name', asker_name,
-        'question_helpfulness', question_helpfulness,
-        'reported', reported,
-        'answers', (
-          json_object_agg('key',
-              SELECT json_build_object(
-                'id', answers.id,
-                'body', body,
-                'date', to_timestamp(date / 1000)::date,
-                'answerer_name', answerer_name,
-                'helpfulness', helpfulness,
-                'photos', (
-                  SELECT array_agg(
-                    photos.url
-                  )
-                  FROM photos
-                  WHERE answer_id = 45032
-                  )
-                )
-              FROM answers
-              WHERE answers.question_id = questions.id;
-          )
-        )
-      )
-    )
-    FROM questions
-
-    WHERE product_id=1;
+-- Index on answer_id in Photos table
+CREATE INDEX photos_answerId_index on photos(answer_id);
