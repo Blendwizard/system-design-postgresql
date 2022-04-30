@@ -20,8 +20,6 @@ pool.connect((err, res) => {
 
     getProductQuestions: (id, callback, page = 1, count = 5) => {
     let offset = count * (page - 1);
-    console.log("count", count)
-    console.log("offset", offset, "page::", page)
     const query =
     `SELECT
     array_agg(
@@ -59,7 +57,7 @@ pool.connect((err, res) => {
       product.product_id = id;
       product.results = res.rows[0].array_agg;
 
-      callback(null, product);
+      callback(product);
     })
 
     .catch(err => callback(err))
@@ -100,7 +98,7 @@ pool.connect((err, res) => {
       question.page = page;
       question.count = count;
       question.results = res.rows[0].json_agg;
-      callback(null, question);
+      callback(question);
     })
     .catch(err => callback(err));
   },
@@ -114,7 +112,7 @@ pool.connect((err, res) => {
     const values = [body, email, name, parseInt(product_id)];
     pool
     .query(query, values)
-    .then(res => callback(null, res))
+    .then(res => callback(res))
     .catch(err => callback(err))
   },
 
@@ -131,7 +129,7 @@ pool.connect((err, res) => {
     const values = [question_id, body, name, email, photos];
 
     pool.query(query, values)
-    .then(res => callback(null, res))
+    .then(res => callback(res))
     .catch(err => callback(err));
 
   },
@@ -145,7 +143,7 @@ pool.connect((err, res) => {
 
     pool
     .query(query, value)
-    .then(res => callback(null, res))
+    .then(res => callback(res))
     .catch(err => callback(err));
   },
 
@@ -159,7 +157,7 @@ pool.connect((err, res) => {
 
     pool
     .query(query, value)
-    .then(res => callback(null, res))
+    .then(res => callback(res))
     .catch(err => callback(err));
   },
 
@@ -171,12 +169,11 @@ pool.connect((err, res) => {
     const value = [id];
     pool
     .query(query, value)
-    .then(res => callback(null, res))
+    .then(res => callback(res))
     .catch(err => callback(err));
   },
 
   reportAnswer: (id, callback) => {
-    console.log('reported answer!')
     const query = `
       UPDATE answers
       SET reported = 1
@@ -185,7 +182,7 @@ pool.connect((err, res) => {
     const value = [id];
     pool
     .query(query, value)
-    .then(res => callback(null, res))
+    .then(res => callback(res))
     .catch(err => callback(err));
   }
 

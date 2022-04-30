@@ -1,6 +1,8 @@
 import http from 'k6/http';
 import { sleep } from 'k6';
 
+// LOCAL LOAD TESTING
+
 export const options = {
   scenarios: {
     constant_request_rate: {
@@ -27,24 +29,6 @@ export default function () {
   // const url = `http://localhost:3000/qa/questions/`;
   // const payload = JSON.stringify({
   //   body: 'Is this a test query from our benchmarks?',
-  //   name: 'TestName',
-  //   email: 'Test@EMAIL.com',
-  //   product_id: 1
-  // });
-
-  // const params = {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // };
-
-  // http.post(url, payload, params);
-
-
-  // // Post Scenario 2
-  // const url = `http://localhost:3000/qa/questions/:question_id/answers`;
-  // const payload = JSON.stringify({
-  //   body: 'This is a test answer for our bench mark',
   //   name: 'TestName',
   //   email: 'Test@EMAIL.com',
   //   product_id: 1

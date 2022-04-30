@@ -4,7 +4,6 @@ module.exports = {
 
   getQuestions: (req, res) => {
     let product = req.query.product_id;
-    console.log(req.query);
     models.database.getProductQuestions(product, (err, success) => {
       if (err) {
         res.status(500).send(err);
@@ -15,7 +14,6 @@ module.exports = {
   },
 
   getAnswers: (req, res) => {
-    console.log(req.params)
     models.database.getQuestionAnswers(req.params.question_id, (err, success) => {
       if (err) {
         res.status(500).send(err);
