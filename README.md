@@ -18,3 +18,8 @@
 </ul>
 
 **Results:**
+<ul>
+  <li>Reduced worst-case query time from 3000-4000ms to 20-30ms.</li>
+  <li>Maintained <1% error rate on deployed servers</li>
+  <li>Deployed load balancing to increase load to a stable 1500 RPS with an average 71ms response time.</li>
+</ul>
